@@ -65,9 +65,10 @@ namespace BoatDockingSys
                 TypeNameHandling = TypeNameHandling.All,
                 Formatting = Formatting.Indented,
             };
-            var jsonString = JsonConvert.SerializeObject(harbor, options);
+            var jsonHarbor = JsonConvert.SerializeObject(harbor, options);
             var jsonRejectedBoats = JsonConvert.SerializeObject(rejectedBoats, options);
-            File.WriteAllText("SavedHarbor.txt", jsonString);
+            File.WriteAllText("RejectedBoats.txt", jsonRejectedBoats);
+            File.WriteAllText("SavedHarbor.txt", jsonHarbor);
         }
 
         static bool LoadHarborByFile()
@@ -78,9 +79,13 @@ namespace BoatDockingSys
                 {
                     TypeNameHandling = TypeNameHandling.All,
                 };
-                string jsonData = File.ReadAllText("SavedHarbor.txt");
-                Boat[][] loadedHarbor = JsonConvert.DeserializeObject<Boat[][]>(jsonData, options);
+                string jsonHarbor = File.ReadAllText("SavedHarbor.txt");
+                Boat[][] loadedHarbor = JsonConvert.DeserializeObject<Boat[][]>(jsonHarbor, options);
                 harbor = loadedHarbor;
+                string jsonRejectedBoats = File.ReadAllText("RejectedBoats.txt");
+                int loadedRejectedBoats = JsonConvert.DeserializeObject<int>(jsonRejectedBoats, options);
+                rejectedBoats = loadedRejectedBoats;
+
                 return true;
             }
             return false;
